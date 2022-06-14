@@ -25,6 +25,7 @@ class ParticipantsPage extends StatelessWidget {
         onPressed: () {
           _partsKey.currentState?.showAdd();
         },
+        child: const Icon(Icons.add),
       ),
     );
   }
