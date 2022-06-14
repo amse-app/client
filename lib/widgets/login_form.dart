@@ -118,8 +118,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                               "Error: Credentials or ServerAddress incorrect")));
                     }
                   } catch (e, s) {
-                    print(e);
-                    print(s);
                     setState(() {
                       _loading = false;
                     });
