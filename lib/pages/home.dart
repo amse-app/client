@@ -6,6 +6,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AmseScaffold(selectedIndex: 0, body: Text("Dashboard"));
+    return const AmseScaffold(
+        selectedIndex: 0, body: Center(child: Text("Dashboard")));
   }
 }

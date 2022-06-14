@@ -8,6 +8,7 @@ class AmseScaffold extends StatefulWidget {
   final bool firstLevel;
   final Widget? title;
   final List<Widget>? actions;
+  final Widget? floatingActionButton;
 
   const AmseScaffold({
     Key? key,
@@ -16,6 +17,7 @@ class AmseScaffold extends StatefulWidget {
     this.firstLevel = true,
     this.title,
     this.actions,
+    this.floatingActionButton,
   }) : super(key: key);
 
   @override
@@ -59,6 +61,7 @@ class _AmseScaffoldState extends State<AmseScaffold> {
         title: widget.title,
         actions: widget.actions,
       ),
+      floatingActionButton: widget.floatingActionButton,
     );
   }
 }
