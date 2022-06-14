@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:amse/widgets/scaffold.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const AmseScaffold(selectedIndex: 0, body: Text("Dashboard"));
   }
 }

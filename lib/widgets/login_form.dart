@@ -18,6 +18,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final _serverRegex = RegExp(
+      r"^(https?:\/\/)?[a-zA-Z0-9_\-\.]+(:[0-9]{2,5})?$",
+      caseSensitive: false);
+  final _domainRegex =
+      RegExp(r"^[a-zA-Z0-9_\-\.]+(:[0-9]{2,5})?$", caseSensitive: false);
+
   bool _loading = false;
 
   @override
@@ -40,8 +46,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           children: <Widget>[
             TextFormField(
               decoration: const InputDecoration(label: Text("Server")),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null ||
+                    value.isEmpty ||
+                    !_serverRegex.hasMatch(value)) {
                   return "Please enter a valid server address";
                 }
                 return null;
@@ -79,12 +88,21 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   setState(() {
                     _loading = true;
                   });
-                  //TODO: health check
-                  ref.read(apiProvider.notifier).state =
-                      AmseApi(Uri.parse(_addressController.text));
-
-                  AmseApi api = ref.read(apiProvider);
                   try {
+                    String urlString = _addressController.text;
+                    if (_domainRegex.hasMatch(urlString)) {
+                      urlString = "http://$urlString";
+                    }
+                    Uri uri = Uri.parse(urlString);
+
+                    if (!(await AmseApi.checkHealth(uri))) {
+                      throw Exception("Server is not reachable1");
+                    }
+
+                    ref.read(apiProvider.notifier).state = AmseApi(uri);
+
+                    AmseApi api = ref.read(apiProvider);
+
                     bool success = await api.authorization.login(
                         username: _usernameController.text,
                         password: _passwordController.text);
@@ -99,7 +117,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                           content: Text(
                               "Error: Credentials or ServerAddress incorrect")));
                     }
-                  } catch (e) {
+                  } catch (e, s) {
+                    print(e);
+                    print(s);
                     setState(() {
                       _loading = false;
                     });
