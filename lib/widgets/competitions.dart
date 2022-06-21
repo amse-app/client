@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:amse/api.dart';
 import 'package:amse/providers/competitions.dart';
 import 'package:amse_api_client/amse_api_client.dart';
@@ -221,9 +219,7 @@ class _CompetitionCreateFormState extends ConsumerState<CompetitionCreateForm> {
         GoRouter.of(context).pop();
         ref.read(competitionProvider.notifier).refresh();
       }
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       if (mounted) {
         setState(() {
           _loading = false;

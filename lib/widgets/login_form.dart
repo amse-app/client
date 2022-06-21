@@ -116,9 +116,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("No Success")));
                     }
-                  } catch (e, s) {
-                    print(e);
-                    print(s);
+                  } catch (e) {
                     setState(() {
                       _loading = false;
                     });

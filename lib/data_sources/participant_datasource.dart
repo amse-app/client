@@ -31,9 +31,7 @@ class ParticipantDataSource extends DataTableSource {
     _participants = await api.participants.getAll();
     _count = _participants.length;
     _loading = null;
-    print("hi");
     notifyListeners();
-    print(isRowCountApproximate);
   }
 
   @override
