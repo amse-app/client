@@ -113,11 +113,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       setState(() {
                         _loading = false;
                       });
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              "Error: Credentials or ServerAddress incorrect")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("No Success")));
                     }
-                  } catch (e) {
+                  } catch (e, s) {
+                    print(e);
+                    print(s);
                     setState(() {
                       _loading = false;
                     });

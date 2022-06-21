@@ -1,7 +1,9 @@
 import 'package:amse/api.dart';
+import 'package:amse/pages/competitions.dart';
 import 'package:amse/pages/home.dart';
 import 'package:amse/pages/participants.dart';
 import 'package:amse_api_client/amse_api_client.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,6 +44,26 @@ final routerProvider = Provider((ref) {
             return ParticipantsPage(add: add);
           },
         ),
+        GoRoute(
+            path: "/competitions",
+            name: "competitions",
+            builder: (context, state) => const CompetitionsPage(),
+            routes: [
+              GoRoute(
+                path: "add",
+                name: "addCompetition",
+                pageBuilder: (context, state) {
+                  return const MaterialPage(
+                      fullscreenDialog: true, child: CompetitionCreatePage());
+                },
+              ),
+              GoRoute(
+                path: ":cid",
+                name: "competitionDetail",
+                builder: (context, state) =>
+                    CompetitionDetailPage(state.params["cid"]!),
+              ),
+            ])
       ],
       routerNeglect: true,
       redirect: (state) {
