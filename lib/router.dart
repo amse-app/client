@@ -16,17 +16,19 @@ final routerProvider = Provider((ref) {
         GoRoute(
           path: "/",
           name: "home",
-          builder: (context, state) => const HomePage(),
+          pageBuilder: (context, state) =>
+              FadeTransitionPage(child: const HomePage()),
         ),
         GoRoute(
           path: "/login",
           name: "login",
-          builder: (context, state) => const LoginPage(),
+          pageBuilder: (context, state) =>
+              FadeTransitionPage(child: const LoginPage()),
         ),
         GoRoute(
           path: "/participants",
           name: "participants",
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             var addS = state.queryParams["add"];
             final bool add;
             if (addS == null || addS.isEmpty) {
@@ -41,13 +43,14 @@ final routerProvider = Provider((ref) {
               }
             }
 
-            return ParticipantsPage(add: add);
+            return FadeTransitionPage(child: ParticipantsPage(add: add));
           },
         ),
         GoRoute(
             path: "/competitions",
             name: "competitions",
-            builder: (context, state) => const CompetitionsPage(),
+            pageBuilder: (context, state) =>
+                FadeTransitionPage(child: const CompetitionsPage()),
             routes: [
               GoRoute(
                 path: "add",
@@ -60,8 +63,8 @@ final routerProvider = Provider((ref) {
               GoRoute(
                 path: ":cid",
                 name: "competitionDetail",
-                builder: (context, state) =>
-                    CompetitionDetailPage(state.params["cid"]!),
+                pageBuilder: (context, state) => FadeTransitionPage(
+                    child: CompetitionDetailPage(state.params["cid"]!)),
               ),
             ])
       ],
@@ -77,3 +80,18 @@ final routerProvider = Provider((ref) {
         return null;
       });
 });
+
+class FadeTransitionPage extends CustomTransitionPage {
+  static final _curveTween = CurveTween(curve: Curves.easeIn);
+
+  FadeTransitionPage({required Widget child, LocalKey? key})
+      : super(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
+                      opacity: animation.drive(_curveTween),
+                      child: child,
+                    ),
+            child: child,
+            key: key);
+}
