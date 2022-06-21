@@ -54,7 +54,8 @@ final routerProvider = Provider((ref) {
             routes: [
               GoRoute(
                 path: "add",
-                name: "addCompetition",
+                //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+                name: "add_competition",
                 pageBuilder: (context, state) {
                   return const MaterialPage(
                       fullscreenDialog: true, child: CompetitionCreatePage());
@@ -62,7 +63,8 @@ final routerProvider = Provider((ref) {
               ),
               GoRoute(
                 path: ":cid",
-                name: "competitionDetail",
+                //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+                name: "competition_detail",
                 pageBuilder: (context, state) => FadeTransitionPage(
                     child: CompetitionDetailPage(state.params["cid"]!)),
               ),

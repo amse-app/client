@@ -18,7 +18,8 @@ class CompetitionsPage extends ConsumerWidget {
       title: const Text("Competitions"),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GoRouter.of(context).pushNamed("addCompetition");
+          //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+          GoRouter.of(context).pushNamed("add_competition");
         },
         child: const Icon(Icons.add),
       ),

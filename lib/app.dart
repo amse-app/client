@@ -10,7 +10,9 @@ class AmseApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     GoRouter router = ref.read(routerProvider);
     return MaterialApp.router(
-        routeInformationParser: router.routeInformationParser,
-        routerDelegate: router.routerDelegate);
+      routeInformationProvider: router.routeInformationProvider,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
+    );
   }
 }

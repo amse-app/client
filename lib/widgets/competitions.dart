@@ -29,7 +29,8 @@ class CompetitionListView extends ConsumerWidget {
             title: Text(title),
             subtitle: subtitle,
             onTap: () {
-              GoRouter.of(context).goNamed("competitionDetail",
+              //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+              GoRouter.of(context).goNamed("competition_detail",
                   params: {"cid": c.id.toString()});
             },
             trailing: IconButton(
