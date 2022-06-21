@@ -2,6 +2,7 @@ import 'package:amse/api.dart';
 import 'package:amse/pages/competitions.dart';
 import 'package:amse/pages/home.dart';
 import 'package:amse/pages/participants.dart';
+import 'package:amse/pages/users.dart';
 import 'package:amse_api_client/amse_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,28 +48,34 @@ final routerProvider = Provider((ref) {
           },
         ),
         GoRoute(
-            path: "/competitions",
-            name: "competitions",
+          path: "/competitions",
+          name: "competitions",
+          pageBuilder: (context, state) =>
+              FadeTransitionPage(child: const CompetitionsPage()),
+          routes: [
+            GoRoute(
+              path: "add",
+              //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+              name: "add_competition",
+              pageBuilder: (context, state) {
+                return const MaterialPage(
+                    fullscreenDialog: true, child: CompetitionCreatePage());
+              },
+            ),
+            GoRoute(
+              path: ":cid",
+              //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+              name: "competition_detail",
+              pageBuilder: (context, state) => FadeTransitionPage(
+                  child: CompetitionDetailPage(state.params["cid"]!)),
+            ),
+          ],
+        ),
+        GoRoute(
+            path: "/users",
+            name: "users",
             pageBuilder: (context, state) =>
-                FadeTransitionPage(child: const CompetitionsPage()),
-            routes: [
-              GoRoute(
-                path: "add",
-                //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
-                name: "add_competition",
-                pageBuilder: (context, state) {
-                  return const MaterialPage(
-                      fullscreenDialog: true, child: CompetitionCreatePage());
-                },
-              ),
-              GoRoute(
-                path: ":cid",
-                //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
-                name: "competition_detail",
-                pageBuilder: (context, state) => FadeTransitionPage(
-                    child: CompetitionDetailPage(state.params["cid"]!)),
-              ),
-            ])
+                FadeTransitionPage(child: const UsersPage())),
       ],
       routerNeglect: true,
       redirect: (state) {
