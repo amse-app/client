@@ -1,8 +1,9 @@
 import 'package:amse/widgets/nav_rail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class AmseScaffold extends StatefulWidget {
+class AmseScaffold extends ConsumerWidget {
   final int selectedIndex;
   final Widget body;
   final bool firstLevel;
@@ -21,21 +22,13 @@ class AmseScaffold extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AmseScaffold> createState() => _AmseScaffoldState();
-}
-
-class _AmseScaffoldState extends State<AmseScaffold> {
-  bool extended = true;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool extended = ref.watch(extendedProvider);
     Widget leading;
-    if (widget.firstLevel) {
+    if (firstLevel) {
       leading = IconButton(
           onPressed: () {
-            setState(() {
-              extended = !extended;
-            });
+            ref.read(extendedProvider.notifier).state = !extended;
           },
           icon: const Icon(Icons.menu));
     } else {
@@ -48,20 +41,24 @@ class _AmseScaffoldState extends State<AmseScaffold> {
     return Scaffold(
       body: Row(
         children: [
-          AmseNavRail(selectedIndex: widget.selectedIndex, extended: extended),
+          AmseNavRail(selectedIndex: selectedIndex, extended: extended),
           const VerticalDivider(
             width: 1,
             thickness: 1,
           ),
-          Expanded(child: widget.body)
+          Expanded(child: body)
         ],
       ),
       appBar: AppBar(
         leading: leading,
-        title: widget.title,
-        actions: widget.actions,
+        title: title,
+        actions: actions,
       ),
-      floatingActionButton: widget.floatingActionButton,
+      floatingActionButton: floatingActionButton,
     );
   }
 }
+
+final extendedProvider = StateProvider<bool>((ref) {
+  return true;
+});
