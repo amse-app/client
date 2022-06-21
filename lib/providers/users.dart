@@ -26,6 +26,7 @@ class UserNotifier extends StateNotifier<List<User>> {
       }
 
       state = result;
+      _refreshing = null;
     }
 
     _refreshing ??= _internalRefresh();

@@ -25,6 +25,7 @@ class CompetitionNotifier extends StateNotifier<List<Comp>> {
       }
 
       state = result;
+      _refreshing = null;
     }
 
     _refreshing ??= _internalRefresh();
