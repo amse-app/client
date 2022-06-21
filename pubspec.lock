@@ -6,7 +6,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "22ed61f89b9aaaf26f990a46c6c910f38d4d62bf"
+      resolved-ref: cc229fae8f11794067b538066287503c461ee0fd
       url: "https://github.com/amse-app/api-client.git"
     source: git
     version: "0.1.0"
