@@ -5,24 +5,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CompetitionNotifier extends StateNotifier<List<Comp>> {
   final Ref ref;
+  Future<void>? _refreshing;
 
   CompetitionNotifier(this.ref) : super([]) {
     refresh();
   }
 
-  Future<void> refresh() async {
-    AmseApi api = ref.read(apiProvider);
+  Future<void> refresh() {
+    Future<void> _internalRefresh() async {
+      AmseApi api = ref.read(apiProvider);
 
-    final allComps = await api.competitions.getAll();
+      final allComps = await api.competitions.getAll();
 
-    List<Comp> result = [];
+      List<Comp> result = [];
 
-    for (var mComp in allComps) {
-      Comp c = await api.competitions.getOne(mComp.id);
-      result.add(c);
+      for (var mComp in allComps) {
+        Comp c = await api.competitions.getOne(mComp.id);
+        result.add(c);
+      }
+
+      state = result;
     }
 
-    state = result;
+    _refreshing ??= _internalRefresh();
+    return _refreshing!;
   }
 
   Future<String> add(Comp comp) async {
