@@ -72,10 +72,21 @@ final routerProvider = Provider((ref) {
           ],
         ),
         GoRoute(
-            path: "/users",
-            name: "users",
-            pageBuilder: (context, state) =>
-                FadeTransitionPage(child: const UsersPage())),
+          path: "/users",
+          name: "users",
+          pageBuilder: (context, state) =>
+              FadeTransitionPage(child: const UsersPage()),
+          routes: [
+            GoRoute(
+              path: "add",
+              name: "add_user",
+              pageBuilder: (context, state) => const MaterialPage(
+                child: UserCreatePage(),
+                fullscreenDialog: true,
+              ),
+            )
+          ],
+        ),
       ],
       routerNeglect: true,
       redirect: (state) {
