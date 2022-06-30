@@ -144,9 +144,7 @@ class _UserCreateFormState extends ConsumerState<UserCreateForm> {
                   if (mounted) {
                     GoRouter.of(context).pop();
                   }
-                } catch (e, s) {
-                  print(e);
-                  print(s);
+                } catch (e) {
                   if (mounted) {
                     setState(() {
                       _loading = false;
