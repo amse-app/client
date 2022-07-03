@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:amse/widgets/nav_rail.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -84,5 +87,5 @@ class AmseScaffold extends ConsumerWidget {
 }
 
 final extendedProvider = StateProvider<bool>((ref) {
-  return true;
+  return kIsWeb ? true : !(Platform.isAndroid || Platform.isIOS);
 });

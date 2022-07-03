@@ -2,7 +2,9 @@ import 'package:amse/api.dart';
 import 'package:amse/pages/competitions.dart';
 import 'package:amse/pages/home.dart';
 import 'package:amse/pages/participants.dart';
+import 'package:amse/pages/results.dart';
 import 'package:amse/pages/users.dart';
+import 'package:amse/providers/competitions.dart';
 import 'package:amse_api_client/amse_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,6 +84,39 @@ final routerProvider = Provider((ref) {
             )
           ],
         ),
+        GoRoute(
+          path: "/results",
+          name: "results",
+          pageBuilder: (context, state) =>
+              FadeTransitionPage(child: const ResultsPage()),
+          routes: [
+            GoRoute(
+              path: ":cid",
+              name: "result",
+              pageBuilder: (context, state) {
+                final cid = state.params["cid"];
+                if (cid == null ||
+                    cid.isEmpty ||
+                    !ref
+                        .read(competitionProvider)
+                        .map((e) => e.id)
+                        .contains(cid)) {
+                  throw Exception("no param specified");
+                }
+                return FadeTransitionPage(child: ResultPage(cid: cid));
+              },
+              routes: [
+                GoRoute(
+                  path: "add",
+                  name: "add_result",
+                  pageBuilder: (context, state) {
+                    return FadeTransitionPage(child: const AddResultPage());
+                  },
+                ),
+              ],
+            ),
+          ],
+        )
       ],
       routerNeglect: true,
       redirect: (state) {
