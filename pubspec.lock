@@ -6,7 +6,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: a1c3a524f162ee382e0f78ec6dc359a0d0f2bc8c
+      resolved-ref: fa21e963d8a97614e4d748e71cf83e407f8a6c95
       url: "https://github.com/amse-app/api-client.git"
     source: git
     version: "0.1.0"
@@ -78,6 +78,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -108,7 +113,7 @@ packages:
       name: go_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   http:
     dependency: transitive
     description:
@@ -123,6 +128,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   js:
     dependency: transitive
     description:

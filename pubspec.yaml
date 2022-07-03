@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   go_router: ^4.0.0
   flutter_riverpod: ^1.0.4
   amse_api_client:
