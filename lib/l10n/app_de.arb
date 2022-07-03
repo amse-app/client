@@ -57,5 +57,6 @@
   "id": "ID",
   "add_user": "Benutzer hinzufügen",
   "add_competition": "Wettbewerb hinzufügen",
-  "competition": "Wettbewerb"
+  "competition": "Wettbewerb",
+  "actions": "Aktionen"
 }

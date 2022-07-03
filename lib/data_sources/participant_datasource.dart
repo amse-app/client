@@ -66,7 +66,14 @@ class ParticipantDataSource extends DataTableSource {
         DataCell(Text(part.number ?? "-")),
         DataCell(Text(part.name ?? "-")),
         DataCell(Text(birth)),
-        DataCell(Text(competition))
+        DataCell(Text(competition)),
+        DataCell(IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () async {
+            await ref.read(apiProvider).participants.delete(part.id!);
+            refresh();
+          },
+        ))
       ],
     );
     //TODO: add option for deleting participants

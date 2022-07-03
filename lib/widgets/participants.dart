@@ -25,7 +25,8 @@ class ParticipantsWidgetState extends ConsumerState<ParticipantsWidget> {
           DataColumn(label: Text(AppLocalizations.of(context)!.number)),
           DataColumn(label: Text(AppLocalizations.of(context)!.name)),
           DataColumn(label: Text(AppLocalizations.of(context)!.birthday)),
-          DataColumn(label: Text(AppLocalizations.of(context)!.competitions))
+          DataColumn(label: Text(AppLocalizations.of(context)!.competitions)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
         ],
         actions: [
           IconButton(

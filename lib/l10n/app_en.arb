@@ -57,5 +57,6 @@
   "id": "id",
   "add_user": "Add user",
   "add_competition": "Add competition",
-  "competition": "Competition"
+  "competition": "Competition",
+  "actions": "actions"
 }
