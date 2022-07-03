@@ -1,7 +1,6 @@
 import 'package:amse/api.dart';
 import 'package:amse/providers/competitions.dart';
 import 'package:amse_api_client/amse_api_client.dart';
-import 'package:amse_api_client/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amse_api_client/models.dart' as amse_models;

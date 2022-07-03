@@ -3,6 +3,7 @@ import 'package:amse_api_client/amse_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AmseNavRail extends ConsumerWidget {
   final bool extended;
@@ -40,28 +41,28 @@ class AmseNavRail extends ConsumerWidget {
       extended: extended,
       labelType: NavigationRailLabelType.none,
       destinations: [
-        const NavigationRailDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            label: Text("Dashboard"),
-            selectedIcon: Icon(Icons.dashboard)),
-        const NavigationRailDestination(
-            icon: Icon(Icons.group_outlined),
-            label: Text("Participants"),
-            selectedIcon: Icon(Icons.group)),
-        const NavigationRailDestination(
-            icon: Icon(Icons.timer_outlined),
-            label: Text("Results"),
-            selectedIcon: Icon(Icons.timer)),
+        NavigationRailDestination(
+            icon: const Icon(Icons.dashboard_outlined),
+            label: Text(AppLocalizations.of(context)!.dashboard),
+            selectedIcon: const Icon(Icons.dashboard)),
+        NavigationRailDestination(
+            icon: const Icon(Icons.group_outlined),
+            label: Text(AppLocalizations.of(context)!.participants),
+            selectedIcon: const Icon(Icons.group)),
+        NavigationRailDestination(
+            icon: const Icon(Icons.timer_outlined),
+            label: Text(AppLocalizations.of(context)!.results),
+            selectedIcon: const Icon(Icons.timer)),
         if (isAdmin)
-          const NavigationRailDestination(
-              icon: Icon(Icons.workspaces_outlined),
-              label: Text("Competitions"),
-              selectedIcon: Icon(Icons.workspaces)),
+          NavigationRailDestination(
+              icon: const Icon(Icons.workspaces_outlined),
+              label: Text(AppLocalizations.of(context)!.competitions),
+              selectedIcon: const Icon(Icons.workspaces)),
         if (isAdmin)
-          const NavigationRailDestination(
-              icon: Icon(Icons.manage_accounts_outlined),
-              label: Text("Users"),
-              selectedIcon: Icon(Icons.manage_accounts))
+          NavigationRailDestination(
+              icon: const Icon(Icons.manage_accounts_outlined),
+              label: Text(AppLocalizations.of(context)!.users),
+              selectedIcon: const Icon(Icons.manage_accounts))
       ],
     );
   }

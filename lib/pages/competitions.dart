@@ -4,6 +4,7 @@ import 'package:amse/widgets/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetitionsPage extends ConsumerWidget {
   const CompetitionsPage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class CompetitionsPage extends ConsumerWidget {
         child: CompetitionListView(),
       ),
       selectedIndex: 3,
-      title: const Text("Competitions"),
+      title: Text(AppLocalizations.of(context)!.competitions),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
@@ -47,7 +48,7 @@ class CompetitionDetailPage extends ConsumerWidget {
       ),
       selectedIndex: 3,
       firstLevel: false,
-      title: const Text("Competition"),
+      title: Text(AppLocalizations.of(context)!.competition),
       actions: [
         IconButton(
             onPressed: () {
@@ -66,7 +67,8 @@ class CompetitionCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add competition")),
+      appBar:
+          AppBar(title: Text(AppLocalizations.of(context)!.add_competition)),
       body: const Center(
         child: CompetitionCreateForm(),
       ),

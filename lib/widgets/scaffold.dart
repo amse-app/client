@@ -2,6 +2,7 @@ import 'package:amse/widgets/nav_rail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum MenuOptions { about }
 
@@ -58,9 +59,9 @@ class AmseScaffold extends ConsumerWidget {
           ...?actions,
           PopupMenuButton(
             itemBuilder: (context) => <PopupMenuEntry<MenuOptions>>[
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: MenuOptions.about,
-                child: Text("About"),
+                child: Text(AppLocalizations.of(context)!.about),
               )
             ],
             onSelected: (MenuOptions option) {
@@ -69,7 +70,8 @@ class AmseScaffold extends ConsumerWidget {
                   context: context,
                   applicationName: "amse",
                   applicationVersion: "0.1.0",
-                  applicationLegalese: "Copyright by Paul Barbenheim 2022",
+                  applicationLegalese:
+                      "${AppLocalizations.of(context)!.copyright} Paul Barbenheim 2022",
                 );
               }
             },

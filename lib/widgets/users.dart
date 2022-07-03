@@ -4,6 +4,7 @@ import 'package:amse_api_client/amse_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserListView extends ConsumerWidget {
   const UserListView({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class UserListView extends ConsumerWidget {
         }
         Widget? subtitle;
         if (user.roles.contains("admin")) {
-          subtitle = const Text("admin");
+          subtitle = Text(AppLocalizations.of(context)!.admin);
         }
 
         return ListTile(
@@ -71,17 +72,18 @@ class _UserCreateFormState extends ConsumerState<UserCreateForm> {
       key: _formkey,
       child: Column(
         children: [
-          const Text(
-            "Create User",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+          Text(
+            AppLocalizations.of(context)!.create_user,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
           ),
           const Padding(padding: EdgeInsets.all(30)),
           TextFormField(
             controller: _usernameController,
-            decoration: const InputDecoration(label: Text("username")),
+            decoration: InputDecoration(
+                label: Text(AppLocalizations.of(context)!.username)),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "username is required";
+                return AppLocalizations.of(context)!.user_create_username_val;
               }
               return null;
             },
@@ -89,12 +91,13 @@ class _UserCreateFormState extends ConsumerState<UserCreateForm> {
           const Padding(padding: EdgeInsets.all(15)),
           TextFormField(
             controller: _nameController,
-            decoration: const InputDecoration(label: Text("name")),
+            decoration: InputDecoration(
+                label: Text(AppLocalizations.of(context)!.name)),
           ),
           const Padding(padding: EdgeInsets.all(15)),
           Row(
             children: [
-              const Text("is Admin"),
+              Text(AppLocalizations.of(context)!.is_admin),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Checkbox(
@@ -111,12 +114,13 @@ class _UserCreateFormState extends ConsumerState<UserCreateForm> {
           const Padding(padding: EdgeInsets.all(15)),
           TextFormField(
             controller: _passwdController,
-            decoration: const InputDecoration(label: Text("password")),
+            decoration: InputDecoration(
+                label: Text(AppLocalizations.of(context)!.password)),
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
             validator: (value) {
               if (value == null || value.length < 8) {
-                return "Das Passwort muss mindestens acht Stellen haben";
+                return AppLocalizations.of(context)!.user_create_password_val;
               }
               return null;
             },
@@ -150,9 +154,9 @@ class _UserCreateFormState extends ConsumerState<UserCreateForm> {
                       _loading = false;
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
-                          "Failed to create the user. Is the username unique?",
+                          AppLocalizations.of(context)!.user_create_error,
                         ),
                       ),
                     );
@@ -160,7 +164,7 @@ class _UserCreateFormState extends ConsumerState<UserCreateForm> {
                 }
               }
             },
-            child: const Text("Submit"),
+            child: Text(AppLocalizations.of(context)!.submit),
           ),
           if (_loading)
             const Padding(

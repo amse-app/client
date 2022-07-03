@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetitionListView extends ConsumerWidget {
   const CompetitionListView({Key? key}) : super(key: key);
@@ -57,52 +58,54 @@ class CompetitionDetailView extends ConsumerWidget {
     final comp = ref.read(competitionProvider).firstWhere((c) => c.id == _id);
     return Column(
       children: [
-        const Text(
-          "General",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        Text(
+          AppLocalizations.of(context)!.general,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
         Table(
           children: <TableRow>[
             TableRow(children: [
-              const Text("id"),
+              Text(AppLocalizations.of(context)!.id),
               SelectableText(comp.id.toString())
             ]),
-            TableRow(
-                children: [const Text("short"), SelectableText(comp.short)]),
             TableRow(children: [
-              const Text("name"),
+              Text(AppLocalizations.of(context)!.short),
+              SelectableText(comp.short)
+            ]),
+            TableRow(children: [
+              Text(AppLocalizations.of(context)!.name),
               SelectableText(comp.name ?? "-")
             ]),
             TableRow(children: [
-              const Text("description"),
+              Text(AppLocalizations.of(context)!.description),
               SelectableText(comp.description ?? "-")
             ]),
             if (comp.config.assign.autoAssign ?? false)
               TableRow(children: [
-                const Text("assign within"),
+                Text(AppLocalizations.of(context)!.assign_within),
                 SelectableText(
                     "${comp.config.assign.criteria?.ge} - ${comp.config.assign.criteria?.le}")
               ]),
             TableRow(children: [
-              const Text("created at"),
+              Text(AppLocalizations.of(context)!.created_at),
               SelectableText(comp.createdAt.toString())
             ]),
             TableRow(children: [
-              const Text("updated at"),
+              Text(AppLocalizations.of(context)!.updated_at),
               SelectableText(comp.updatedAt.toString())
             ]),
           ],
         ),
         const Padding(padding: EdgeInsets.all(30)),
-        const Text(
-          "Config",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        Text(
+          AppLocalizations.of(context)!.config,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
         CompConfigDisplay(comp.config),
         const Padding(padding: EdgeInsets.all(15)),
-        const Text(
-          "Qualification Config",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        Text(
+          AppLocalizations.of(context)!.qualifying_config,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
         CompConfigDisplay(comp.qConfig),
       ],
@@ -119,31 +122,31 @@ class CompConfigDisplay extends StatelessWidget {
     return Table(
       children: <TableRow>[
         TableRow(children: [
-          const Text("type"),
+          Text(AppLocalizations.of(context)!.type),
           SelectableText(config.scoring.subject)
         ]),
         TableRow(children: [
-          const Text("unit"),
+          Text(AppLocalizations.of(context)!.unit),
           SelectableText(config.scoring.unit)
         ]),
         TableRow(children: [
-          const Text("has penalties"),
+          Text("${AppLocalizations.of(context)!.penalties}?"),
           SelectableText(config.scoring.enablePenalties.toString())
         ]),
         TableRow(children: [
-          const Text("point-type"),
+          Text(AppLocalizations.of(context)!.point_type),
           SelectableText(config.scoring.pointType)
         ]),
         TableRow(children: [
-          const Text("raw decimals"),
+          Text(AppLocalizations.of(context)!.raw_dp),
           SelectableText(config.scoring.rawdp.toString())
         ]),
         TableRow(children: [
-          const Text("point decimals"),
+          Text(AppLocalizations.of(context)!.point_dp),
           SelectableText(config.scoring.pointdp.toString())
         ]),
         TableRow(children: [
-          const Text("conversion"),
+          Text(AppLocalizations.of(context)!.conversion),
           SelectableText(config.conversionFunction.toString())
         ])
       ],
@@ -225,8 +228,8 @@ class _CompetitionCreateFormState extends ConsumerState<CompetitionCreateForm> {
         setState(() {
           _loading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Failed to create Competition")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.comp_create_error)));
       }
     }
   }
@@ -236,7 +239,9 @@ class _CompetitionCreateFormState extends ConsumerState<CompetitionCreateForm> {
     return Stepper(
       currentStep: _stepperIndex,
       controlsBuilder: (context, details) {
-        String continueText = (details.stepIndex == 2) ? "SAVE" : "CONTINUE";
+        String continueText = (details.stepIndex == 2)
+            ? AppLocalizations.of(context)!.save.toUpperCase()
+            : AppLocalizations.of(context)!.continueText.toUpperCase();
         return Row(
           children: [
             if (_loading) const CircularProgressIndicator(),
@@ -244,7 +249,8 @@ class _CompetitionCreateFormState extends ConsumerState<CompetitionCreateForm> {
                 onPressed: details.onStepContinue, child: Text(continueText)),
             if (details.stepIndex != 0)
               TextButton(
-                  onPressed: details.onStepCancel, child: const Text("BACK"))
+                  onPressed: details.onStepCancel,
+                  child: Text(AppLocalizations.of(context)!.back.toUpperCase()))
           ],
         );
       },
@@ -279,37 +285,37 @@ class _CompetitionCreateFormState extends ConsumerState<CompetitionCreateForm> {
       },
       steps: <Step>[
         Step(
-          title: const Text("General"),
+          title: Text(AppLocalizations.of(context)!.general),
           content: Form(
             key: _genFormKey,
             child: Column(
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(
-                    label: Text("short"),
+                  decoration: InputDecoration(
+                    label: Text(AppLocalizations.of(context)!.short),
                   ),
                   maxLength: 4,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   controller: _shortController,
                   validator: (value) {
                     if (value == null || value.isEmpty || value.length > 4) {
-                      return "Please input a valid value!";
+                      return AppLocalizations.of(context)!.generic_val;
                     }
                     return null;
                   },
                 ),
                 const Padding(padding: EdgeInsets.all(15)),
                 TextFormField(
-                  decoration: const InputDecoration(
-                    label: Text("name"),
+                  decoration: InputDecoration(
+                    label: Text(AppLocalizations.of(context)!.name),
                   ),
                   controller: _nameController,
                 ),
                 const Padding(padding: EdgeInsets.all(15)),
                 TextFormField(
-                  decoration: const InputDecoration(
-                    label: Text("description"),
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    label: Text(AppLocalizations.of(context)!.description),
+                    border: const OutlineInputBorder(),
                   ),
                   controller: _descriptionController,
                   maxLines: 4,
@@ -333,14 +339,14 @@ class _CompetitionCreateFormState extends ConsumerState<CompetitionCreateForm> {
           ),
         ),
         Step(
-          title: const Text("Config"),
+          title: Text(AppLocalizations.of(context)!.config),
           content: Form(
             key: _confFormKey,
             child: CompetitionConfigForm(config: _config),
           ),
         ),
         Step(
-            title: const Text("Qualifying Config"),
+            title: Text(AppLocalizations.of(context)!.qualifying_config),
             content: Form(
                 key: _qConfFormKey,
                 child: CompetitionConfigForm(config: _qConfig)))
@@ -372,20 +378,20 @@ class _CompetitionConfigFormState extends State<CompetitionConfigForm> {
 
   String? _dropdownValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return "Please select an value";
+      return AppLocalizations.of(context)!.dropdown_val;
     }
     return null;
   }
 
   String? _numberValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return "Please fill this field";
+      return AppLocalizations.of(context)!.generic_val;
     }
     if (int.tryParse(value) == null) {
-      return "Not a number";
+      return AppLocalizations.of(context)!.nan;
     }
     if (int.parse(value) > 10) {
-      return "Too big";
+      return AppLocalizations.of(context)!.too_big;
     }
     return null;
   }
@@ -403,7 +409,8 @@ class _CompetitionConfigFormState extends State<CompetitionConfigForm> {
               config.subject = value ?? "";
             });
           },
-          decoration: const InputDecoration(label: Text("Subject")),
+          decoration: InputDecoration(
+              label: Text(AppLocalizations.of(context)!.comp_subject)),
           value: config.subject,
           validator: _dropdownValidator,
         ),
@@ -416,7 +423,8 @@ class _CompetitionConfigFormState extends State<CompetitionConfigForm> {
               config.unit = value ?? "";
             });
           },
-          decoration: const InputDecoration(label: Text("Unit")),
+          decoration:
+              InputDecoration(label: Text(AppLocalizations.of(context)!.unit)),
           value: config.unit,
           validator: _dropdownValidator,
         ),
@@ -430,15 +438,16 @@ class _CompetitionConfigFormState extends State<CompetitionConfigForm> {
             });
           },
           value: config.pointType,
-          decoration: const InputDecoration(label: Text("point type")),
+          decoration: InputDecoration(
+              label: Text(AppLocalizations.of(context)!.point_type)),
           validator: _dropdownValidator,
         ),
         const Padding(padding: EdgeInsets.all(15)),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Text("Penalties"),
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Text(AppLocalizations.of(context)!.penalties),
             ),
             Switch(
               value: config.penalties,
@@ -456,7 +465,8 @@ class _CompetitionConfigFormState extends State<CompetitionConfigForm> {
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
           ],
-          decoration: const InputDecoration(label: Text("raw dp")),
+          decoration: InputDecoration(
+              label: Text(AppLocalizations.of(context)!.raw_dp)),
           onChanged: (value) {
             setState(() {
               config.rawDP = int.tryParse(value) ?? 3;
@@ -471,7 +481,8 @@ class _CompetitionConfigFormState extends State<CompetitionConfigForm> {
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
           ],
-          decoration: const InputDecoration(label: Text("point dp")),
+          decoration: InputDecoration(
+              label: Text(AppLocalizations.of(context)!.point_dp)),
           onChanged: (value) {
             setState(() {
               config.pointDP = int.tryParse(value) ?? 3;

@@ -6,6 +6,7 @@ import 'package:amse_api_client/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParticipantsWidget extends ConsumerStatefulWidget {
   const ParticipantsWidget({Key? key}) : super(key: key);
@@ -20,11 +21,11 @@ class ParticipantsWidgetState extends ConsumerState<ParticipantsWidget> {
     return Center(
       child: PaginatedDataTable(
         source: ref.read(participantDataProvider),
-        columns: const [
-          DataColumn(label: Text("Number")),
-          DataColumn(label: Text("Name")),
-          DataColumn(label: Text("Birth")),
-          DataColumn(label: Text("Competitions"))
+        columns: [
+          DataColumn(label: Text(AppLocalizations.of(context)!.number)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.name)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.birthday)),
+          DataColumn(label: Text(AppLocalizations.of(context)!.competitions))
         ],
         actions: [
           IconButton(
@@ -33,7 +34,7 @@ class ParticipantsWidgetState extends ConsumerState<ParticipantsWidget> {
               },
               icon: const Icon(Icons.refresh))
         ],
-        header: const Text("Participants"),
+        header: Text(AppLocalizations.of(context)!.participants),
         //TODO: specify other options
       ),
     );
@@ -66,7 +67,9 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
   @override
   Widget build(BuildContext context) {
     var comps = ref.watch(competitionProvider);
-    String ageString = _birth != null ? "Age: ${_calculateAge(_birth!)}" : "";
+    String ageString = _birth != null
+        ? "${AppLocalizations.of(context)!.age}: ${_calculateAge(_birth!)}"
+        : "";
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -74,24 +77,24 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
           constraints: const BoxConstraints(maxWidth: 700),
           child: Column(
             children: [
-              const Text("Create participant"),
+              Text(AppLocalizations.of(context)!.create_participant),
               const Padding(padding: EdgeInsets.all(30)),
               TextFormField(
                 controller: _nameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please fill this field";
+                    return AppLocalizations.of(context)!.generic_val;
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  label: Text("name"),
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context)!.name),
                 ),
               ),
               const Padding(padding: EdgeInsets.all(15)),
               Row(
                 children: [
-                  const Text("Birthday"),
+                  Text(AppLocalizations.of(context)!.birthday),
                   TextButton(
                       onPressed: () async {
                         DateTime? dt = await showDatePicker(
@@ -99,7 +102,6 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2004, 1, 1),
                           lastDate: DateTime.now(),
-                          locale: const Locale("de", "DE"),
                           initialDatePickerMode: DatePickerMode.year,
                           initialEntryMode: DatePickerEntryMode.input,
                         );
@@ -126,7 +128,7 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
                           });
                         }
                       },
-                      child: const Text("Select")),
+                      child: Text(AppLocalizations.of(context)!.select)),
                   Text(_birth?.toLocal().toString() ?? ""),
                   Text(ageString),
                 ],
@@ -134,12 +136,12 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
               const Padding(padding: EdgeInsets.all(15)),
               TextFormField(
                 controller: _numberController,
-                decoration: const InputDecoration(
-                  label: Text("number"),
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context)!.number),
                 ),
               ),
               const Padding(padding: EdgeInsets.all(15)),
-              const Text("Competitions"),
+              Text(AppLocalizations.of(context)!.competitions),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: comps.length,
@@ -184,36 +186,45 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
                             GoRouter.of(context).pop();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Error occurred")),
+                              SnackBar(
+                                  content: Text(AppLocalizations.of(context)!
+                                      .generic_error)),
                             );
                           }
                         }
                       },
-                      child: const Text("OK")),
+                      child:
+                          Text(AppLocalizations.of(context)!.ok.toUpperCase())),
                   const Padding(padding: EdgeInsets.all(15)),
                   ElevatedButton(
-                      onPressed: () async {
-                        final success = await _saveParticipant();
-                        if (mounted) {
-                          if (success) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text("Participant saved"),
-                            ));
-                            setState(() {
-                              _nameController.text = "";
-                              _numberController.text = "";
-                              _comps = [];
-                              _birth = null;
-                            });
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Error occurred")),
-                            );
-                          }
+                    onPressed: () async {
+                      final success = await _saveParticipant();
+                      if (mounted) {
+                        if (success) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                              AppLocalizations.of(context)!.participant_saved,
+                            ),
+                          ));
+                          setState(() {
+                            _nameController.text = "";
+                            _numberController.text = "";
+                            _comps = [];
+                            _birth = null;
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(AppLocalizations.of(context)!
+                                    .generic_error)),
+                          );
                         }
-                      },
-                      child: const Text("SAVE")),
+                      }
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.save.toUpperCase(),
+                    ),
+                  ),
                 ],
               ),
               const Padding(padding: EdgeInsets.all(30)),
