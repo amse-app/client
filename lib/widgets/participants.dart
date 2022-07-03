@@ -33,6 +33,7 @@ class ParticipantsWidgetState extends ConsumerState<ParticipantsWidget> {
               },
               icon: const Icon(Icons.refresh))
         ],
+        header: const Text("Participants"),
         //TODO: specify other options
       ),
     );
