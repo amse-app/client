@@ -27,26 +27,21 @@ final routerProvider = Provider((ref) {
               FadeTransitionPage(child: const LoginPage()),
         ),
         GoRoute(
-          path: "/participants",
-          name: "participants",
-          pageBuilder: (context, state) {
-            var addS = state.queryParams["add"];
-            final bool add;
-            if (addS == null || addS.isEmpty) {
-              add = false;
-            } else {
-              if (addS.toLowerCase() == "true") {
-                add = true;
-              } else if (addS.toLowerCase() == "false") {
-                add = false;
-              } else {
-                throw const FormatException("not a valid parameter");
-              }
-            }
-
-            return FadeTransitionPage(child: ParticipantsPage(add: add));
-          },
-        ),
+            path: "/participants",
+            name: "participants",
+            pageBuilder: (context, state) {
+              return FadeTransitionPage(child: const ParticipantsPage());
+            },
+            routes: [
+              GoRoute(
+                path: "add",
+                name: "add_participant",
+                pageBuilder: (context, state) => const MaterialPage(
+                  fullscreenDialog: true,
+                  child: ParticipantCreatePage(),
+                ),
+              )
+            ]),
         GoRoute(
           path: "/competitions",
           name: "competitions",

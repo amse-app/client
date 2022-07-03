@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../data_sources/participant_datasource.dart';
+import '../providers/competitions.dart';
+import '../providers/users.dart';
+
 class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
 
@@ -108,6 +112,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                         password: _passwordController.text);
                     if (!mounted) return;
                     if (success) {
+                      ref.read(userProvider);
+                      ref.read(competitionProvider);
+                      ref.read(participantDataProvider);
                       GoRouter.of(context).goNamed("home");
                     } else {
                       setState(() {

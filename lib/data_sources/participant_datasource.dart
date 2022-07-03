@@ -1,5 +1,7 @@
 import 'package:amse/api.dart';
+import 'package:amse/providers/competitions.dart';
 import 'package:amse_api_client/amse_api_client.dart';
+import 'package:amse_api_client/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amse_api_client/models.dart' as amse_models;
@@ -36,8 +38,6 @@ class ParticipantDataSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    // TODO: implement competitions
-
     if (!(index < _participants.length) || index < 0) {
       return null;
     }
@@ -52,14 +52,25 @@ class ParticipantDataSource extends DataTableSource {
       birth = part.birth!.toLocal().toString();
     }
 
+    var competitions = ref.read(competitionProvider);
+    String competition = "No competitions available";
+    if (part.comps != null) {
+      competition = "";
+      for (var cs in part.comps!) {
+        competition =
+            "$competition${competitions.firstWhere((element) => element.id == cs).short}, ";
+      }
+    }
+
     return DataRow(
       cells: [
         DataCell(Text(part.number ?? "-")),
         DataCell(Text(part.name ?? "-")),
         DataCell(Text(birth)),
-        const DataCell(Text("competitions later"))
+        DataCell(Text(competition))
       ],
     );
+    //TODO: add option for deleting participants
   }
 
   @override
