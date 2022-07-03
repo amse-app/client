@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+enum MenuOptions { about }
+
 class AmseScaffold extends ConsumerWidget {
   final int selectedIndex;
   final Widget body;
@@ -52,7 +54,27 @@ class AmseScaffold extends ConsumerWidget {
       appBar: AppBar(
         leading: leading,
         title: title,
-        actions: actions,
+        actions: [
+          ...?actions,
+          PopupMenuButton(
+            itemBuilder: (context) => <PopupMenuEntry<MenuOptions>>[
+              const PopupMenuItem(
+                value: MenuOptions.about,
+                child: Text("About"),
+              )
+            ],
+            onSelected: (MenuOptions option) {
+              if (option == MenuOptions.about) {
+                showAboutDialog(
+                  context: context,
+                  applicationName: "amse",
+                  applicationVersion: "0.1.0",
+                  applicationLegalese: "Copyright by Paul Barbenheim 2022",
+                );
+              }
+            },
+          )
+        ],
       ),
       floatingActionButton: floatingActionButton,
     );
