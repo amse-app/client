@@ -1,6 +1,7 @@
 import 'package:amse/api.dart';
 import 'package:amse/data_sources/participant_datasource.dart';
 import 'package:amse/providers/competitions.dart';
+import 'package:amse/providers/participants.dart';
 import 'package:amse_api_client/amse_api_client.dart';
 import 'package:amse_api_client/models.dart';
 import 'package:flutter/material.dart';
@@ -246,6 +247,8 @@ class _ParticipantCreateFormState extends ConsumerState<ParticipantCreateForm> {
         birth: _birth,
         number: _numberController.text,
         comps: _comps));
+    ref.read(participantDataProvider).refresh();
+    ref.read(participantProvider.notifier).refresh();
     return true;
   }
 

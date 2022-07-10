@@ -58,5 +58,6 @@
   "add_user": "Benutzer hinzufügen",
   "add_competition": "Wettbewerb hinzufügen",
   "competition": "Wettbewerb",
-  "actions": "Aktionen"
+  "actions": "Aktionen",
+  "participant": "Teilnehmer"
 }

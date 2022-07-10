@@ -52,7 +52,7 @@ final routerProvider = Provider((ref) {
           routes: [
             GoRoute(
               path: "add",
-              //TODO: temporary fix for https://github.com/flutter/flutter/issues/106163
+              //TODO: temporary fix for https://github.com/flutter/flutter/issues/1061639i
               name: "add_competition",
               pageBuilder: (context, state) {
                 return const MaterialPage(
@@ -91,6 +91,11 @@ final routerProvider = Provider((ref) {
               FadeTransitionPage(child: const ResultsPage()),
           routes: [
             GoRoute(
+                path: "add",
+                name: "add_global_result",
+                pageBuilder: (context, state) => const MaterialPage(
+                    child: AddGlobalResultPage(), fullscreenDialog: true)),
+            GoRoute(
               path: ":cid",
               name: "result",
               pageBuilder: (context, state) {
@@ -103,14 +108,28 @@ final routerProvider = Provider((ref) {
                         .contains(cid)) {
                   throw Exception("no param specified");
                 }
-                return FadeTransitionPage(child: ResultPage(cid: cid));
+                return FadeTransitionPage(
+                  child: ResultPage(
+                    comp: ref
+                        .read(competitionProvider)
+                        .firstWhere((element) => element.id == cid),
+                  ),
+                );
               },
               routes: [
                 GoRoute(
                   path: "add",
                   name: "add_result",
                   pageBuilder: (context, state) {
-                    return FadeTransitionPage(child: const AddResultPage());
+                    final cid = state.params["cid"];
+                    assert(cid != null);
+                    return FadeTransitionPage(
+                      child: AddResultPage(
+                        comp: ref
+                            .read(competitionProvider)
+                            .firstWhere((element) => element.id == cid),
+                      ),
+                    );
                   },
                 ),
               ],
